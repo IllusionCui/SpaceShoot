@@ -7,6 +7,7 @@ public class Enemy : MonoBehaviour {
 	public float m_rotationTimeLimit = 3;
 	public float m_rotationSpeed = 30;
 	public float m_life = 10;
+	public Transform m_explosionFX;
 
 	protected Transform m_tranform;
 	protected float m_rotationTimer = 0;
@@ -29,12 +30,12 @@ public class Enemy : MonoBehaviour {
 			if (rocket != null) {
 				m_life -= rocket.m_power;
 				if (m_life <= 0) {
-					Destroy(this.gameObject);
+					DestorySelf();
 				}
 			}
 		} else if (other.tag.CompareTo("Player") == 0) {
 			m_life = 0;
-			Destroy(this.gameObject);
+			DestorySelf();
 		}
 	}
 
@@ -46,5 +47,10 @@ public class Enemy : MonoBehaviour {
 		}
 		m_tranform.Rotate (Vector3.up, m_rotationSpeed*Time.deltaTime, Space.World);
 		m_tranform.Translate (new Vector3(0, 0, -m_speed*Time.deltaTime));
+	}
+
+	protected void DestorySelf() {
+		Instantiate(m_explosionFX, m_tranform.position, Quaternion.identity);
+		Destroy(this.gameObject);
 	}
 }
