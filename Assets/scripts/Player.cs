@@ -6,6 +6,7 @@ public class Player : MonoBehaviour {
 	public float m_speed = 1;
 	public Transform m_rocket;
 	public float m_rocketRateLimit = 1;
+	public float m_life = 3;
 
 	protected Transform m_transform;
 	protected float m_rocketRate = 0;
@@ -42,6 +43,16 @@ public class Player : MonoBehaviour {
 			} else {
 				Instantiate(m_rocket, m_transform.position, m_transform.rotation);
 				m_rocketRate = 0;
+			}
+		}
+	}
+
+	void OnTriggerEnter(Collider other) {
+//		Debug.Log("Player OnTriggerEnter");
+		if (other.tag.CompareTo("Rocket") != 0) {
+			m_life--;
+			if (m_life <= 0) {
+				Destroy(this.gameObject);
 			}
 		}
 	}
